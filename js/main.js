@@ -2,6 +2,7 @@
 var canvas = document.getElementById('PartCanvas');
 var ctx = canvas.getContext('2d');
 var particles = [];
+var numParticles = 2000;
 
 // Set the canvas dimensions
 canvas.height = window.innerHeight;
@@ -18,7 +19,7 @@ ctx.save();
 ctx.translate(canvas.width / 2, canvas.height / 2);
 
 function init(){
-    for(i = 0; i < 1; i++){
+    for(i = 0; i < numParticles; i++){
         particles.push(new Particle(random(-5, 5), random(-5, 5)));
     }
 
@@ -41,7 +42,7 @@ function draw(){
     // Draw particles
     ctx.fillStyle="#FF0000";
     for(i=0; i<particles.length; i++){
-        particles[i].render();
+        particles[i].render(ctx);
     }
 }
 
@@ -62,7 +63,7 @@ function Particle(x, y, weight){
     this.weight = weight;
     this.xVel = random(-10, 10);
     this.yVel = random(-10, 10);
-    this.drag = 0.97;
+    this.drag = 0.998;
 }
 
 Particle.prototype.render = function() {
