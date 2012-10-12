@@ -18,11 +18,19 @@ ctx.save();
 ctx.translate(canvas.width / 2, canvas.height / 2);
 
 function init(){
-    for(i=0; i<20; i++){
+    for(i = 0; i < 1; i++){
         particles.push(new Particle(random(-5, 5), random(-5, 5)));
     }
 
+    setInterval(update, 1000/30);
     setInterval(draw, 1000/30);
+}
+
+function update() {
+	// Update particles
+	for(i=0; i<particles.length; i++){
+        particles[i].update();
+    }
 }
 
 function draw(){
@@ -33,12 +41,7 @@ function draw(){
     // Draw particles
     ctx.fillStyle="#FF0000";
     for(i=0; i<particles.length; i++){
-        var p = particles[i];
-
-        p.x += p.xVel;
-        p.y += p.yVel;
-
-        ctx.fillRect(p.x,p.y,5,5);
+        particles[i].render();
     }
 }
 
@@ -53,12 +56,29 @@ function Particle(x, y, xVel, yVel){
     this.yVel = yVel;
 }
 
-function Particle(x, y){
+function Particle(x, y, weight){
     this.x = x;
     this.y = y;
-    debugger;
+    this.weight = weight;
     this.xVel = random(-10, 10);
     this.yVel = random(-10, 10);
+    this.drag = 0.97;
+}
+
+Particle.prototype.render = function() {
+	this.render = function () {
+        ctx.fillRect(this.x * this.drag, this.y * this.drag, 5, 5);
+    }
+}
+
+Particle.prototype.update = function() {
+	// Update position
+    this.x += this.xVel;
+    this.y += this.yVel;
+
+    // Update velocity
+    this.xVel *= this.drag;
+	this.yVel *= this.drag;
 }
 
 init();
