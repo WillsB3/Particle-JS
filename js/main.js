@@ -5,6 +5,9 @@ var particles = [];
 
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
+ctx.save();
+ctx.translate(canvas.width / 2, canvas.height / 2);
+
 
 function init(){
     for(i=0; i<20; i++){
