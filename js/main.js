@@ -6,8 +6,7 @@ var numParticles = 2000;
 var targetFPS = 30;
 
 // Set the canvas dimensions
-canvas.height = window.innerHeight;
-canvas.width = window.innerWidth;
+sizeCanvas()
 
 // Fill the screen with black
 ctx.fillStyle = "#000000";
@@ -24,14 +23,30 @@ function init(){
         particles.push(new Particle(random(-5, 5), random(-5, 5)));
     }
 
+    window.onresize = sizeCanvas;
+
     setTimeout(update, 1000 / targetFPS);
     setTimeout(draw, 1000 / targetFPS);
 }
 
 function update() {
+	var particlesToRemove = [];
+
 	// Update particles
-	for(i=0; i<particles.length; i++){
-        particles[i].update();
+	for (i = 0; i < particles.length; i++){
+		if (particles[i].isOffScreen()) {
+			particlesToRemove.push(i);
+
+
+		} else {
+        	particles[i].update();
+		}
+    }
+
+    // Remove any off screen particles
+    for (var p = 0; p < particlesToRemove.length; p++) {
+    	console.log('Particle ' + i + ' is off screen - removing');
+		particles.shift(p, p + 1);
     }
 
     // Schedule the next update
@@ -57,11 +72,9 @@ function random(min, max){
     return Math.random() * (max - min) + min;
 }
 
-function Particle(x, y, xVel, yVel){
-    this.x = x;
-    this.y = y;
-    this.xVel = xVel;
-    this.yVel = yVel;
+function sizeCanvas() {
+	canvas.height = window.innerHeight;
+	canvas.width = window.innerWidth;
 }
 
 function Particle(x, y, weight){
@@ -75,8 +88,19 @@ function Particle(x, y, weight){
 
 Particle.prototype.render = function() {
 	this.render = function () {
+		// Draw the particle
         ctx.fillRect(this.x * this.drag, this.y * this.drag, 5, 5);
     }
+}
+
+Particle.prototype.isOffScreen = function() {
+	if (this.x < -canvas.width / 2 || this.x > canvas.width / 2) {
+		return true;
+	} else if (this.y < -canvas.height / 2 || this.y > canvas.height / 2) {
+		return true;
+	}
+
+	return false;
 }
 
 Particle.prototype.update = function() {
@@ -89,4 +113,5 @@ Particle.prototype.update = function() {
 	this.yVel *= this.drag;
 }
 
+//Initialise
 init();
