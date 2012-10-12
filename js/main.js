@@ -16,8 +16,8 @@ function draw(){
     for(i=0; i<particles.length; i++){
         var p = particles[i];
         
-        p.x *= p.xVel;
-        p.y *= p.yVel;
+        p.x += p.xVel;
+        p.y += p.yVel;
         
         ctx.fillRect(p.x,p.y,5,5);
     }
