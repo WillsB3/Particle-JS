@@ -2,7 +2,7 @@
 var canvas = document.getElementById('PartCanvas');
 var ctx = canvas.getContext('2d');
 var particles = [];
-var numParticles = 2000;
+var numParticles = 2;
 var targetFPS = 30;
 
 // Set the canvas dimensions
@@ -20,7 +20,7 @@ ctx.translate(canvas.width / 2, canvas.height / 2);
 
 function init(){
     for(i = 0; i < numParticles; i++){
-        particles.push(new Particle(random(-5, 5), random(-5, 5)));
+        particles.push(new Particle(i, random(-5, 5), random(-5, 5)));
     }
 
     window.onresize = sizeCanvas;
@@ -33,7 +33,7 @@ function update() {
 	var particlesToRemove = [];
 
 	// Update particles
-	for (i = 0; i < particles.length; i++){
+	for (var i = 0; i < particles.length; i++){
 		if (particles[i].isOffScreen()) {
 			particlesToRemove.push(i);
 
@@ -45,8 +45,9 @@ function update() {
 
     // Remove any off screen particles
     for (var p = 0; p < particlesToRemove.length; p++) {
-    	console.log('Particle ' + i + ' is off screen - removing');
-		particles.shift(p, p + 1);
+    	debugger;
+    	console.log('Particle ' + p + ' is off screen - removing');
+		particles.slice(p, p + 1);
     }
 
     // Schedule the next update
@@ -77,13 +78,14 @@ function sizeCanvas() {
 	canvas.width = window.innerWidth;
 }
 
-function Particle(x, y, weight){
+function Particle(id, x, y, weight) {
+	this.id = id;
     this.x = x;
     this.y = y;
-    this.weight = weight;
+    this.drag = 0.998;
     this.xVel = random(-10, 10);
     this.yVel = random(-10, 10);
-    this.drag = 0.998;
+    this.weight = weight;
 }
 
 Particle.prototype.render = function() {
