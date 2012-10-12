@@ -1,16 +1,13 @@
 // Main.js
-debugger
 var canvas = document.getElementById('PartCanvas');
-
 var ctx = canvas.getContext('2d');
-
 var particles = [];
 
 function init(){
     for(i=0; i<20; i++){
         particles.push(new Particle(random(-5, 5), random(-5, 5), 1, 1));
     }
-    
+
     setInterval(draw, 1000/30);
 }
 
@@ -27,7 +24,7 @@ function random(min, max){
 }
 
 function Particle(x, y, xVel, yVel){
-    
+
     this.x = x;
     this.y = y;
     this.xVel = xVel;
