@@ -5,13 +5,15 @@ var particles = [];
 
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
+ctx.fillStyle="#000000";
+ctx.fillRect(0, 0, canvas.width, canvas.height);
 ctx.save();
 ctx.translate(canvas.width / 2, canvas.height / 2);
 
 
 function init(){
     for(i=0; i<20; i++){
-        particles.push(new Particle(random(-5, 5), random(-5, 5), 1.5, 1.5));
+        particles.push(new Particle(random(-5, 5), random(-5, 5)));
     }
 
     setInterval(draw, 1000/30);
@@ -30,15 +32,22 @@ function draw(){
 }
 
 function random(min, max){
-    return (Math.random()*max)+min;
+    return Math.random() * (max - min) + min;
 }
 
 function Particle(x, y, xVel, yVel){
-
     this.x = x;
     this.y = y;
     this.xVel = xVel;
     this.yVel = yVel;
+}
+
+function Particle(x, y){
+    this.x = x;
+    this.y = y;
+    debugger;
+    this.xVel = random(-10, 10);
+    this.yVel = random(-10, 10);
 }
 
 init();
