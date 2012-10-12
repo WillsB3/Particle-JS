@@ -3,6 +3,7 @@ var canvas = document.getElementById('PartCanvas');
 var ctx = canvas.getContext('2d');
 var particles = [];
 var numParticles = 2000;
+var targetFPS = 30;
 
 // Set the canvas dimensions
 canvas.height = window.innerHeight;
@@ -23,8 +24,8 @@ function init(){
         particles.push(new Particle(random(-5, 5), random(-5, 5)));
     }
 
-    setInterval(update, 1000/30);
-    setInterval(draw, 1000/30);
+    setTimeout(update, 1000 / targetFPS);
+    setTimeout(draw, 1000 / targetFPS);
 }
 
 function update() {
@@ -32,6 +33,9 @@ function update() {
 	for(i=0; i<particles.length; i++){
         particles[i].update();
     }
+
+    // Schedule the next update
+	setTimeout(update, 1000 / targetFPS);
 }
 
 function draw(){
@@ -44,6 +48,9 @@ function draw(){
     for(i=0; i<particles.length; i++){
         particles[i].render(ctx);
     }
+
+    // Schedule a redraw for the next frame
+    setTimeout(draw, 1000 / targetFPS);
 }
 
 function random(min, max){
