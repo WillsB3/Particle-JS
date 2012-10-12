@@ -4,7 +4,7 @@ var ctx = canvas.getContext('2d');
 var particles = [];
 
 canvas.height = window.innerHeight;
-canvas.width = window.innerwWdth;
+canvas.width = window.innerWidth;
 
 function init(){
     for(i=0; i<20; i++){
