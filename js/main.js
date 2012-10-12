@@ -5,7 +5,7 @@ var particles = [];
 
 function init(){
     for(i=0; i<20; i++){
-        particles.push(new Particle(random(-5, 5), random(-5, 5), 1, 1));
+        particles.push(new Particle(random(-5, 5), random(-5, 5), 1.5, 1.5));
     }
 
     setInterval(draw, 1000/30);
@@ -15,6 +15,10 @@ function draw(){
     ctx.fillStyle="#FF0000";
     for(i=0; i<particles.length; i++){
         var p = particles[i];
+        
+        p.x *= p.xVel;
+        p.y *= p.yVel;
+        
         ctx.fillRect(p.x,p.y,5,5);
     }
 }
