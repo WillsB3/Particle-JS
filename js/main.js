@@ -2,9 +2,10 @@
 var canvas = document.getElementById('PartCanvas');
 var ctx = canvas.getContext('2d');
 var particles = [];
-var numParticles = 2;
+var numParticles = 100;
 var targetFPS = 30;
-
+var gravity = 1.01;
+var pixelSize = 1;
 // Set the canvas dimensions
 sizeCanvas()
 
@@ -16,11 +17,11 @@ ctx.fillRect(0, 0, canvas.width, canvas.height);
 ctx.save();
 
 // Move the canvas origin to the centre of the screen
-ctx.translate(canvas.width / 2, canvas.height / 2);
+//ctx.translate(canvas.width / 2, canvas.height / 2);
 
 function init(){
     for(i = 0; i < numParticles; i++){
-        particles.push(new Particle(i, random(-5, 5), random(-5, 5)));
+        particles.push(new Particle(i, canvas.width/2, canvas.height/2, gravity));
     }
 
     window.onresize = sizeCanvas;
@@ -36,7 +37,7 @@ function update() {
 	for (var i = 0; i < particles.length; i++){
 		if (particles[i].isOffScreen()) {
 			particlesToRemove.push(i);
-
+            
 
 		} else {
         	particles[i].update();
@@ -46,10 +47,13 @@ function update() {
     // Remove any off screen particles
     for (var p = 0; p < particlesToRemove.length; p++) {
     	debugger;
-    	console.log('Particle ' + p + ' is off screen - removing');
+    	//console.log('Particle ' + p + ' is off screen - removing');
 		particles.slice(p, p + 1);
     }
 
+    for(var i = 0; i<10; i++){
+        particles.push(new Particle(i, canvas.width/2, canvas.height/2, gravity));
+    }
     // Schedule the next update
 	setTimeout(update, 1000 / targetFPS);
 }
@@ -57,11 +61,11 @@ function update() {
 function draw(){
     // Clear the screen
     ctx.fillStyle = "#000000";
-    ctx.fillRect(-canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Draw particles
-    ctx.fillStyle="#FF0000";
     for(i=0; i<particles.length; i++){
+        ctx.fillStyle= particles[i].color;
         particles[i].render(ctx);
     }
 
@@ -82,23 +86,24 @@ function Particle(id, x, y, weight) {
 	this.id = id;
     this.x = x;
     this.y = y;
-    this.drag = 0.998;
+    this.drag = 0.96;
     this.xVel = random(-10, 10);
     this.yVel = random(-10, 10);
     this.weight = weight;
+    this.color = "hsl("+random(180, 260)+", 100%, "+random(50, 100)+"%)";
 }
 
 Particle.prototype.render = function() {
 	this.render = function () {
 		// Draw the particle
-        ctx.fillRect(this.x * this.drag, this.y * this.drag, 5, 5);
+        ctx.fillRect(this.x, this.y, pixelSize, pixelSize);
     }
 }
 
 Particle.prototype.isOffScreen = function() {
-	if (this.x < -canvas.width / 2 || this.x > canvas.width / 2) {
+	if (this.x < 0|| this.x > canvas.width ) {
 		return true;
-	} else if (this.y < -canvas.height / 2 || this.y > canvas.height / 2) {
+	} else if (this.y < 0|| this.y > canvas.height) {
 		return true;
 	}
 
@@ -107,12 +112,19 @@ Particle.prototype.isOffScreen = function() {
 
 Particle.prototype.update = function() {
 	// Update position
-    this.x += this.xVel;
-    this.y += this.yVel;
-
-    // Update velocity
+    this.yVel *= this.drag;
     this.xVel *= this.drag;
-	this.yVel *= this.drag;
+    
+    //this.yVel *= this.weight;
+    //console.log("x:" + this.x + " Y:" + this.y + " xVel:"+this.xVel + " yVel:" + this.yVel);
+    this.x += this.xVel;
+    this.y += this.yVel; this.y *= this.weight;
+    
+    // Update velocity
+    //this.xVel *= this.drag;
+	//this.yVel *= this.drag;
+	
+	
 }
 
 //Initialise
