@@ -9,7 +9,7 @@ body {
 }
 
 div#info{
-    height:20px;
+    height:100%;
     width:100px;
     background:#FFF;
     float:left;
@@ -18,7 +18,7 @@ div#info{
     position:absolute;
     top:0px;
     opacity:0.4;
-    transition: height 0.5s, opacity 0.5s;
+    transition: opacity 0.5s;
     padding:0px 10px;
 }
 

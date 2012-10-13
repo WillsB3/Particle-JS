@@ -4,11 +4,10 @@ var ctx = canvas.getContext('2d');
 var particles = [];
 var numParticles = 100;
 var targetFPS = 30;
-var gravity = 1.01;
+var gravity = 1.05;
 var pixelSize = 1;
-var newParticlesPerSecond = 50;
-var particleOrigin = (canvas.width/2, canvas.height/2 + canvas.height/4);
-
+var particleOrigin = (canvas.width/2, canvas.height/2);
+var maxParticles = 2000;
 // Set the canvas dimensions
 sizeCanvas()
 
@@ -52,8 +51,8 @@ function update() {
     	//console.log('Particle ' + p + ' is off screen - removing');
 		particles.slice(p, p + 1);
     }
-
-    for(var i = 0; i<newParticlesPerSecond; i++){
+    
+    for(var i = particles.length; i<maxParticles; i++){
         particles.push(new Particle(i, canvas.width/2, canvas.height/2, gravity));
     }
     // Schedule the next update
