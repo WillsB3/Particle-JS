@@ -6,6 +6,9 @@ var numParticles = 100;
 var targetFPS = 30;
 var gravity = 1.01;
 var pixelSize = 1;
+var newParticlesPerSecond = 50;
+var particleOrigin = (canvas.width/2, canvas.height/2 + canvas.height/4);
+
 // Set the canvas dimensions
 sizeCanvas()
 
@@ -21,7 +24,7 @@ ctx.save();
 
 function init(){
     for(i = 0; i < numParticles; i++){
-        particles.push(new Particle(i, canvas.width/2, canvas.height/2, gravity));
+        particles.push(new Particle(i, particleOrigin[0], particleOrigin[1], gravity));
     }
 
     window.onresize = sizeCanvas;
@@ -36,9 +39,8 @@ function update() {
 	// Update particles
 	for (var i = 0; i < particles.length; i++){
 		if (particles[i].isOffScreen()) {
+			particles.shift();
 			particlesToRemove.push(i);
-            
-
 		} else {
         	particles[i].update();
 		}
@@ -51,11 +53,13 @@ function update() {
 		particles.slice(p, p + 1);
     }
 
-    for(var i = 0; i<10; i++){
+    for(var i = 0; i<newParticlesPerSecond; i++){
         particles.push(new Particle(i, canvas.width/2, canvas.height/2, gravity));
     }
     // Schedule the next update
 	setTimeout(update, 1000 / targetFPS);
+	
+	document.getElementById('particleCount').innerHTML = particles.length;
 }
 
 function draw(){
@@ -87,8 +91,8 @@ function Particle(id, x, y, weight) {
     this.x = x;
     this.y = y;
     this.drag = 0.96;
-    this.xVel = random(-10, 10);
-    this.yVel = random(-10, 10);
+    this.xVel = random(-15, 15);
+    this.yVel = random(-15, 15);
     this.weight = weight;
     this.color = "hsl("+random(180, 260)+", 100%, "+random(50, 100)+"%)";
 }

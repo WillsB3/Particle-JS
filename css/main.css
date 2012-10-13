@@ -1,4 +1,28 @@
+html{
+    height:100%;
+    width:100%;
+}
+
 body {
   height: 100%;
   width: 100%;
+}
+
+div#info{
+    height:20px;
+    width:100px;
+    background:#FFF;
+    float:left;
+    z-index:999;
+    float:left;
+    position:absolute;
+    top:0px;
+    opacity:0.4;
+    transition: height 0.5s, opacity 0.5s;
+    padding:0px 10px;
+}
+
+div#info:hover{
+    height:100%;
+    opacity:1.0;
 }
