@@ -102,6 +102,9 @@ Particle.prototype.render = function() {
 	this.render = function () {
 		// Draw the particle
         ctx.fillRect(this.x, this.y, pixelSize, pixelSize);
+
+        // Draw particle label
+        ctx.fillText('[' + this.id + ']', this.x + 5, this.y - 5);
     }
 }
 
