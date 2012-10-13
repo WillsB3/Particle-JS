@@ -1,4 +1,14 @@
 body {
   height: 100%;
+  position: relative;
   width: 100%;
+}
+#particle-count {
+  color: #fff;
+  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
