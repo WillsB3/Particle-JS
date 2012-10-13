@@ -3,11 +3,14 @@ var canvas = document.getElementById('PartCanvas');
 var ctx = canvas.getContext('2d');
 var particles = [];
 var numNewParticlesPerUpdate = 0;
-var numInitialParticles = 10;
+var numInitialParticles = 20;
 var targetFPS = 30;
 var gravity = 1.01;
 var pixelSize = 4;
 var $particleCount = $('#particle-count');
+
+// Counter for creating unique particle ids
+var particleId = 0;
 
 // Set the canvas dimensions
 sizeCanvas()
@@ -23,8 +26,9 @@ ctx.save();
 //ctx.translate(canvas.width / 2, canvas.height / 2);
 
 function init(){
-    for(i = 0; i < numInitialParticles; i++){
-        particles.push(new Particle(i, canvas.width/2, canvas.height/2, gravity));
+    for(i = 0; i < numInitialParticles; i++) {
+        particles.push(new Particle(particleId, canvas.width/2, canvas.height/2, gravity));
+        particleId++;
     }
 
     window.onresize = sizeCanvas;
@@ -48,7 +52,7 @@ function update() {
 
     // Remove any off screen particles
     for (var p = 0; p < particlesToRemove.length; p++) {
-    	//console.log('Particle ' + p + ' is off screen - removing');
+    	console.log('Particle id ' + particles[p].id + ' is off screen - removing');
 		particles.splice(particlesToRemove[p], 1);
     }
 
