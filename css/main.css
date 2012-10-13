@@ -17,7 +17,7 @@ div#info{
     float:left;
     position:absolute;
     top:0px;
-    opacity:0.4;
+    opacity:0.1;
     transition: opacity 0.5s;
     padding:0px 10px;
 }

@@ -59,6 +59,7 @@ function update() {
 	setTimeout(update, 1000 / targetFPS);
 	
 	document.getElementById('particleCount').innerHTML = particles.length;
+	document.getElementById('gravityLevel').innerHTML = gravity;
 }
 
 function draw(){

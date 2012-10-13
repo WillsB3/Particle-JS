@@ -23,19 +23,31 @@
 		<div id="info">
 		    <h1>Info</h1>
 		    <p>Particles:<span id="particleCount">0</span></p>
-		    <div id="slider"></div>
+		    <div id="particleSlider"></div>
+		    
+		    <p>Gravity:<span id="gravityLevel">0</span></p>
+            <div id="gravitySlider"></div>
 		</div>
 		<script src="js/main.js"></script>
 		<script>
-                $( "#slider" ).slider({  
+                $( "#particleSlider" ).slider({  
                                         min:100,
                                         max:5000,
                                         value: 2000,
                                         slide: function(event, ui) {
-                                            maxParticles = $('#slider').slider("option", "value");
+                                            maxParticles = $('#particleSlider').slider("option", "value");
                                         }  
                                     });
-                
+                                    
+               $( "#gravitySlider" ).slider({  
+                                        min:0.10,
+                                        max:2.00,
+                                        value: 1.05,
+                                        step: 0.02,
+                                        slide: function(event, ui) {
+                                            gravity = $('#gravitySlider').slider("option", "value");
+                                        }  
+                                    }); 
 		</script>
 	</body>
 </html>
