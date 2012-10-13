@@ -3,7 +3,7 @@ var canvas = document.getElementById('PartCanvas');
 var ctx = canvas.getContext('2d');
 var particles = [];
 var numNewParticlesPerUpdate = 0;
-var numInitialParticles = 2;
+var numInitialParticles = 10;
 var targetFPS = 30;
 var gravity = 1.01;
 var pixelSize = 4;
@@ -49,7 +49,7 @@ function update() {
     // Remove any off screen particles
     for (var p = 0; p < particlesToRemove.length; p++) {
     	//console.log('Particle ' + p + ' is off screen - removing');
-		particles.splice(particlesToRemove[p], particlesToRemove[p] + 1);
+		particles.splice(particlesToRemove[p], 1);
     }
 
     // Create more particles
