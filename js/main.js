@@ -2,10 +2,13 @@
 var canvas = document.getElementById('PartCanvas');
 var ctx = canvas.getContext('2d');
 var particles = [];
-var numParticles = 100;
+var numNewParticlesPerUpdate = 0;
+var numInitialParticles = 2;
 var targetFPS = 30;
 var gravity = 1.01;
-var pixelSize = 1;
+var pixelSize = 4;
+var $particleCount = $('#particle-count');
+
 // Set the canvas dimensions
 sizeCanvas()
 
@@ -20,14 +23,14 @@ ctx.save();
 //ctx.translate(canvas.width / 2, canvas.height / 2);
 
 function init(){
-    for(i = 0; i < numParticles; i++){
+    for(i = 0; i < numInitialParticles; i++){
         particles.push(new Particle(i, canvas.width/2, canvas.height/2, gravity));
     }
 
     window.onresize = sizeCanvas;
 
     setTimeout(update, 1000 / targetFPS);
-    setTimeout(draw, 1000 / targetFPS);
+    setTimeout(render, 1000 / targetFPS);
 }
 
 function update() {
@@ -37,7 +40,6 @@ function update() {
 	for (var i = 0; i < particles.length; i++){
 		if (particles[i].isOffScreen()) {
 			particlesToRemove.push(i);
-            
 
 		} else {
         	particles[i].update();
@@ -46,19 +48,19 @@ function update() {
 
     // Remove any off screen particles
     for (var p = 0; p < particlesToRemove.length; p++) {
-    	debugger;
     	//console.log('Particle ' + p + ' is off screen - removing');
-		particles.slice(p, p + 1);
+		particles.splice(particlesToRemove[p], particlesToRemove[p] + 1);
     }
 
-    for(var i = 0; i<10; i++){
+    // Create more particles
+    for(var i = 0; i < numNewParticlesPerUpdate; i++){
         particles.push(new Particle(i, canvas.width/2, canvas.height/2, gravity));
     }
     // Schedule the next update
 	setTimeout(update, 1000 / targetFPS);
 }
 
-function draw(){
+function render(){
     // Clear the screen
     ctx.fillStyle = "#000000";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -69,8 +71,11 @@ function draw(){
         particles[i].render(ctx);
     }
 
+    // Update the particle count
+	$particleCount.text(particles.length);
+
     // Schedule a redraw for the next frame
-    setTimeout(draw, 1000 / targetFPS);
+    setTimeout(render, 1000 / targetFPS);
 }
 
 function random(min, max){
@@ -114,17 +119,17 @@ Particle.prototype.update = function() {
 	// Update position
     this.yVel *= this.drag;
     this.xVel *= this.drag;
-    
+
     //this.yVel *= this.weight;
     //console.log("x:" + this.x + " Y:" + this.y + " xVel:"+this.xVel + " yVel:" + this.yVel);
     this.x += this.xVel;
     this.y += this.yVel; this.y *= this.weight;
-    
+
     // Update velocity
     //this.xVel *= this.drag;
 	//this.yVel *= this.drag;
-	
-	
+
+
 }
 
 //Initialise
